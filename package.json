@@ -1,0 +1,18 @@
+{
+  "name": "@httpdrop/tunnel",
+  "version": "1.0.0",
+  "description": "Expose localhost to the internet via httpdrop tunnel",
+  "main": "tunnel-cli.js",
+  "bin": {
+    "httpdrop-tunnel": "./tunnel-cli.js"
+  },
+  "scripts": {
+    "start": "node tunnel-cli.js"
+  },
+  "keywords": ["tunnel", "localhost", "webhook", "httpdrop", "ngrok"],
+  "author": "httpdrop",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16"
+  }
+}
