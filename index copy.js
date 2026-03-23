@@ -55,7 +55,6 @@ if (HELP || !TOKEN) {
 let reconnectDelay = 1000;
 let connected      = false;
 let tunnelUrl      = null;
-let currentTunnelId = null;
 
 // ── Cores no terminal ────────────────────────────────────────────────────────
 const c = {
@@ -197,7 +196,6 @@ function connect() {
       'sec-websocket-key':      wsKey,
       'sec-websocket-version':  '13',
       'authorization':          `Bearer ${TOKEN}`,
-      ...(currentTunnelId ? { 'x-tunnel-id': currentTunnelId } : {}),
     },
   };
 
@@ -253,7 +251,6 @@ async function handleMessage(socket, raw) {
 
   if (msg.event === 'connected') {
     tunnelUrl = msg.tunnelUrl;
-    currentTunnelId = msg.tunnelId;
     printBanner(tunnelUrl);
     return;
   }
@@ -279,10 +276,7 @@ async function handleMessage(socket, raw) {
 
 // ── Reconexão com backoff exponencial ────────────────────────────────────────
 function scheduleReconnect() {
-  const msg_r = currentTunnelId
-    ? `Reconectando em ${reconnectDelay / 1000}s (mantendo ID ${currentTunnelId})...`
-    : `Reconectando em ${reconnectDelay / 1000}s...`;
-  console.log(`  ${c.gray}${msg_r}${c.reset}`);
+  console.log(`  ${c.gray}Reconectando em ${reconnectDelay / 1000}s...${c.reset}`);
   setTimeout(() => {
     reconnectDelay = Math.min(reconnectDelay * 2, 30000);
     connect();
